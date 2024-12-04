@@ -1,0 +1,11 @@
+.card-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.date {
+  text-align: right;
+  flex-grow: 1;
+}

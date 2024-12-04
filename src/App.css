@@ -24,6 +24,7 @@ body {
 .container-view {
   padding: 20px;
   flex-grow: 1;
+  overflow: auto;
 }
 
 .App-header {

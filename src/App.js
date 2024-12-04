@@ -4,20 +4,30 @@ import { useSelector } from 'react-redux';
 
 import Header from './components/Header';
 import NavBar from './components/NavBar';
+import CallView from './components/CallView';
+import ArchiveView from './components/ArchiveView';
 import './App.css';
-
+import { setCalls } from './redux/store';
+import { useDispatch } from 'react-redux';
 function App() {
-  const page = useSelector((state) => state.value);
-  const [calls, setCalls] = useState([]);
+  const page = useSelector((state) => state.page);
+  const calls = useSelector((state) => state.calls);
+  const dispatch = useDispatch();
+  // TODO add loading state
+  const [isLoading, setIsLoading] = useState(true);
   const fetchCalls = async () => {
+    console.log('fetching calls');
     const url = "https://aircall-api.onrender.com";
     const response = await fetch(url + "/activities");
     const data = await response.json();
-    setCalls(data);
+    dispatch(setCalls(data));
+    setIsLoading(false);
   }
   useEffect(() => {
-    fetchCalls();
-  }, []);
+    if (calls.length === 0) {
+      fetchCalls();
+    }
+  });
 
   return (
     <div className='container'>
@@ -25,20 +35,12 @@ function App() {
       <div className='container-view'>
         {page === 'calls' && (
           <div>
-            Call page
+            <CallView />
           </div>
-        )
-        }
+        )}
         {
           page === 'archive' && (
-            <div className='container-view__archive'>
-              {
-                <div>
-                  Archive page
-                </div>
-
-              }
-            </div>
+            <ArchiveView />
           )
         }
       </div>

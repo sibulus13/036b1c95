@@ -1,22 +1,30 @@
 import { createSlice, configureStore } from '@reduxjs/toolkit'
 
-const pageSlice = createSlice({
-    name: 'page',
+const slice = createSlice({
+    name: 'main',
     initialState: {
-        value: 'calls'
+        page: 'calls',
+        calls: [],
     },
     reducers: {
         toCallPage: state => {
-            state.value = 'calls'
+            state.page = 'calls'
         },
         toArchivePage: state => {
-            state.value = 'archive'
+            state.page = 'archive'
+        },
+        setCalls: (state, action) => {
+            state.calls = action.payload
+        },
+        toggleCallArchive: (state, action) => {
+            const call = state.calls.find(call => call.id === action.payload)
+            call.is_archived = !call.is_archived
         }
     }
 })
 
-export const { toCallPage, toArchivePage } = pageSlice.actions
+export const { toCallPage, toArchivePage, setCalls, toggleCallArchive } = slice.actions
 
 export default configureStore({
-    reducer: pageSlice.reducer
+    reducer: slice.reducer
 })
