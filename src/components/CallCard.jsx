@@ -1,16 +1,16 @@
 import * as React from "react";
+import { useDispatch } from "react-redux";
 import Accordion from "@mui/material/Accordion";
 import AccordionActions from "@mui/material/AccordionActions";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import ArchiveIcon from "@mui/icons-material/Archive";
 import Button from "@mui/material/Button";
-import { useDispatch } from "react-redux";
+import { motion } from "framer-motion";
 
 import CallIcon from "./CallIcon";
 import "../css/callCard.css";
 import { toggleCallArchive } from "../redux/store";
-import { patch } from "@mui/material";
 
 // Function to format the duration of the call
 const formatDuration = (seconds) => {
@@ -68,7 +68,16 @@ export default function CallCard({ call }) {
   };
 
   return (
-    <div>
+    <motion.div
+      key={call.id}
+      exit={{
+        opacity: 0,
+        transition: {
+          duration: 0.5,
+        },
+      }}
+    >
+      {" "}
       <Accordion>
         <AccordionSummary aria-controls="panel1-content" id="panel1-header">
           <div className="card-container">
@@ -88,6 +97,6 @@ export default function CallCard({ call }) {
           </Button>
         </AccordionActions>
       </Accordion>
-    </div>
+    </motion.div>
   );
 }

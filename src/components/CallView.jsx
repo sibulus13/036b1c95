@@ -1,4 +1,5 @@
 import { useSelector } from "react-redux";
+import { AnimatePresence } from "framer-motion";
 
 import CallCard from "./CallCard";
 import "../css/view.css";
@@ -17,10 +18,12 @@ const CallView = () => {
         Object.entries(sortCallsByDate(activeCalls))
           .reverse()
           .map(([date, calls]) => (
-            <div key={date} className="date-view">
+            <div>
               <h2>{date}</h2>
               {calls.map((call) => (
-                <CallCard key={call.id} call={call} />
+                <AnimatePresence>
+                  <CallCard key={call.id} call={call} />
+                </AnimatePresence>
               ))}
             </div>
           ))}
