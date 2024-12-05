@@ -4,8 +4,7 @@ import { useSelector } from 'react-redux';
 
 import Header from './components/Header';
 import NavBar from './components/NavBar';
-import CallView from './components/CallView';
-import ArchiveView from './components/ArchiveView';
+import View from './components/View';
 import './App.css';
 import { setCalls } from './redux/store';
 import { useDispatch } from 'react-redux';
@@ -16,7 +15,6 @@ function App() {
   // TODO add loading state
   const [isLoading, setIsLoading] = useState(true);
   const fetchCalls = async () => {
-    console.log('fetching calls');
     const url = "https://aircall-api.onrender.com";
     const response = await fetch(url + "/activities");
     const data = await response.json();
@@ -33,16 +31,10 @@ function App() {
     <div className='container'>
       <Header />
       <div className='container-view'>
-        {page === 'calls' && (
-          <div>
-            <CallView />
-          </div>
-        )}
         {
-          page === 'archive' && (
-            <ArchiveView />
-          )
+          isLoading && <div>Loading...</div>
         }
+        <View type={page} id={page} />
       </div>
       <NavBar />
     </div>

@@ -9,3 +9,9 @@
   flex-direction: column;
   gap: 10px;
 }
+
+.date-column {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}

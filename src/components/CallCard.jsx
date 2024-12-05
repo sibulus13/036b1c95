@@ -11,7 +11,7 @@ import { motion } from "framer-motion";
 import CallIcon from "./CallIcon";
 import "../css/callCard.css";
 import { toggleCallArchive } from "../redux/store";
-
+import { patchToggleCallArchive } from "../lib/call";
 // Function to format the duration of the call
 const formatDuration = (seconds) => {
   const hours = Math.floor(seconds / 3600);
@@ -54,16 +54,16 @@ export default function CallCard({ call }) {
   const dispatch = useDispatch();
 
   const toggleArchive = async (id) => {
-    const url = `https://aircall-api.onrender.com/activities/${id}`;
-    const res = await fetch(url, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ is_archived: true }),
-    });
-    if (res.ok) {
-      dispatch(toggleCallArchive(id));
+    try {
+      const res = await patchToggleCallArchive(call);
+      if (res.ok) {
+        dispatch(toggleCallArchive(id));
+      } else {
+        alert("Error archiving call, please try again later.");
+      }
+    } catch (error) {
+      console.error("Error toggling archive status:", error);
+      alert("Error archiving call, please try again later.");
     }
   };
 
@@ -72,6 +72,7 @@ export default function CallCard({ call }) {
       key={call.id}
       exit={{
         opacity: 0,
+        x: -20,
         transition: {
           duration: 0.5,
         },
