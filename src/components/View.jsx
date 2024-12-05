@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AnimatePresence, motion } from "framer-motion";
 
@@ -23,14 +24,16 @@ const emptyText = (type) => {
 
 // Generic view component to display calls or archived calls
 const View = ({ type = "calls" }) => {
-  const calls = useSelector((state) => state.calls);
-  let filteredCalls = calls;
-  if (type === "calls") {
-    filteredCalls = calls.filter((call) => !call.is_archived);
-  } else if (type === "archive") {
-    filteredCalls = calls.filter((call) => call.is_archived);
-  }
   const dispatch = useDispatch();
+  const calls = useSelector((state) => state.calls);
+  const filteredCalls = useMemo(() => {
+    if (type === "calls") {
+      return calls.filter((call) => !call.is_archived);
+    } else if (type === "archive") {
+      return calls.filter((call) => call.is_archived);
+    }
+    return calls;
+  }, [calls, type]);
   const toggleAllArchive = async () => {
     try {
       await Promise.all(
@@ -52,11 +55,11 @@ const View = ({ type = "calls" }) => {
       {filteredCalls.length > 0 ? (
         Object.entries(sortCallsByDate(filteredCalls))
           .reverse()
-          .map(([date, calls]) => (
-            <div className="date-column" key={date}>
+          .map(([date, calls], index) => (
+            <div className="date-column" key={index}>
               <h2>{date}</h2>
               <AnimatePresence>
-                {calls.map((call) => (
+                {calls.map((call, index) => (
                   <motion.div
                     key={call.id}
                     exit={{
@@ -67,7 +70,7 @@ const View = ({ type = "calls" }) => {
                       },
                     }}
                   >
-                    <CallCard call={call} key={call.id} />
+                    <CallCard call={call} />
                   </motion.div>
                 ))}
               </AnimatePresence>
