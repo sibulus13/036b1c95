@@ -1,6 +1,7 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import ReactLoading from 'react-loading';
 
 import Header from './components/Header';
 import NavBar from './components/NavBar';
@@ -12,7 +13,6 @@ function App() {
   const page = useSelector((state) => state.page);
   const calls = useSelector((state) => state.calls);
   const dispatch = useDispatch();
-  // TODO add loading state
   const [isLoading, setIsLoading] = useState(true);
   const fetchCalls = async () => {
     const url = "https://aircall-api.onrender.com";
@@ -32,9 +32,11 @@ function App() {
       <Header />
       <div className='container-view'>
         {
-          isLoading && <div>Loading...</div>
+          isLoading ? <div
+          className='loading-container'
+          ><ReactLoading type={'spin'} color={'black'} height={200} width={200} /></div> :
+            <View type={page} key={page} />
         }
-        <View type={page} key={page} />
       </div>
       <NavBar />
     </div>
