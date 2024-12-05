@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AnimatePresence, motion } from "framer-motion";
+import Button from "@mui/material/Button";
 
 import CallCard from "./CallCard";
 import "../css/view.css";
@@ -49,9 +50,12 @@ const View = ({ type = "calls" }) => {
 
   return (
     <div className="view">
-      <button onClick={() => toggleAllArchive()}>
+      <Button
+        variant="contained"
+        onClick={() => toggleAllArchive()}
+      >
         <div>{archiveButtonText(type)}</div>
-      </button>
+      </Button>
       {filteredCalls.length > 0 ? (
         Object.entries(sortCallsByDate(filteredCalls))
           .reverse()
