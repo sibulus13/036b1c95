@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 
 import CallCard from "./CallCard";
 import "../css/view.css";
@@ -57,7 +57,18 @@ const View = ({ type = "calls" }) => {
               <h2>{date}</h2>
               <AnimatePresence>
                 {calls.map((call) => (
-                  <CallCard call={call} key={call.id} />
+                  <motion.div
+                    key={call.id}
+                    exit={{
+                      opacity: 0,
+                      x: -20,
+                      transition: {
+                        duration: 0.5,
+                      },
+                    }}
+                  >
+                    <CallCard call={call} key={call.id} />
+                  </motion.div>
                 ))}
               </AnimatePresence>
             </div>

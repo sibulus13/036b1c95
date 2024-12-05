@@ -34,7 +34,7 @@ function App() {
         {
           isLoading && <div>Loading...</div>
         }
-        <View type={page} id={page} />
+        <View type={page} key={page} />
       </div>
       <NavBar />
     </div>
